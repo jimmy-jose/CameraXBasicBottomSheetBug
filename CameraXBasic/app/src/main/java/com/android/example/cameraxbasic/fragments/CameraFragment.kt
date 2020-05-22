@@ -37,19 +37,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.MimeTypeMap
 import android.widget.ImageButton
-import androidx.camera.core.AspectRatio
-import androidx.camera.core.Camera
-import androidx.camera.core.CameraInfoUnavailableException
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.ImageCapture
+import androidx.annotation.NonNull
+import androidx.camera.core.*
 import androidx.camera.core.ImageCapture.Metadata
-import androidx.camera.core.ImageCaptureException
-import androidx.camera.core.ImageProxy
-import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.net.toFile
 import androidx.core.view.setPadding
@@ -66,13 +60,13 @@ import com.android.example.cameraxbasic.utils.ANIMATION_SLOW_MILLIS
 import com.android.example.cameraxbasic.utils.simulateClick
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
-import java.util.ArrayDeque
-import java.util.Locale
+import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import kotlin.collections.ArrayList
@@ -91,7 +85,7 @@ typealias LumaListener = (luma: Double) -> Unit
  */
 class CameraFragment : Fragment() {
 
-    private lateinit var container: ConstraintLayout
+    private lateinit var container: CoordinatorLayout
     private lateinit var viewFinder: PreviewView
     private lateinit var outputDirectory: File
     private lateinit var broadcastManager: LocalBroadcastManager
@@ -191,8 +185,32 @@ class CameraFragment : Fragment() {
     @SuppressLint("MissingPermission")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        container = view as ConstraintLayout
+        container = view as CoordinatorLayout
         viewFinder = container.findViewById(R.id.view_finder)
+
+        val bottom_sheet: ConstraintLayout = container.findViewById(R.id.design_bottom_sheet)
+        val sheetBehavior = BottomSheetBehavior.from(bottom_sheet)
+// click event for show-dismiss bottom sheet
+// click event for show-dismiss bottom sheet
+//        btn_bottom_sheet.setOnClickListener(View.OnClickListener {
+////            if (sheetBehavior.getState() !== BottomSheetBehavior.STATE_EXPANDED) {
+////                sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED)
+////                btn_bottom_sheet.setText("Close sheet")
+////            } else {
+////                sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED)
+////                btn_bottom_sheet.setText("Expand sheet")
+////            }
+////        })
+// callback for do something
+// callback for do something
+        sheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onSlide(p0: View, p1: Float) {
+            }
+
+            override fun onStateChanged(p0: View, p1: Int) {
+            }
+
+        })
 
         // Initialize our background executor
         cameraExecutor = Executors.newSingleThreadExecutor()
